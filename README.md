@@ -16,7 +16,6 @@ De WLZ staat voor de Wet Langdurige Zorg en is het vervolg van de AWBZ. Mensen d
  - Dashboard is te filteren op:
     - Zorgverzekeraar
     - Huidige zorgverzekeraar (door fusies van bijvoorbeeld Agis. Dit is dan Zilveren Kruis ipv Agis)
-    - 
 
 ## Vervolg
 
@@ -26,4 +25,4 @@ Met de komst van het bemiddelingsregister zou het eventueel mogelijk zijn om, i.
 
 De Nza zou dit eventueel kunnen delen via Azure Entra (Azure Active Directory variant voor gast gebruikers). Via RLS en AD groepen is het namelijk mogelijk om de zorgverzekeraars alleen hun eigen data te tonen. Security technisch gezien kan er geen gebruik gemaakt worden van data van de andere zorgverzekeraars.
 
-Zou ik overigens een leuk project vinden, dus mochten jullie dit zien? Ik hou me aanbevolen ;)!
+Zou ik overigens een leuk project vinden, dus mochten jullie dit zien? Ik hou me aanbevolen;)
