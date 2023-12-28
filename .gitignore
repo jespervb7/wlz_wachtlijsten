@@ -3,4 +3,5 @@
 *.csv
 data/
 dump/
+__pycache__
 config.py
