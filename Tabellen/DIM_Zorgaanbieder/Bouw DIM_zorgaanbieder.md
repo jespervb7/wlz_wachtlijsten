@@ -4,16 +4,46 @@
 
 ## Ophalen van AGB codes
 
-Vanuit de [website van de Iwlz standaarden]("https://modules.istandaarden.nl/tabelbeheer/swagger-ui/index.html#/ZorgaanbiederController/getZorgaanbieders") kunnen wij een REST API bevragen voor data van alle zorgaanbieders. Deze API bevat meer gegevens dan wij nodig hebben. Namelijk mutaties - historie van records en inactieve AGB codes. Alleen actieve AGB codes zonder mutaties gaan wij ophalen.
+Vanuit de [website van de Iwlz standaarden]("https://modules.istandaarden.nl/tabelbeheer/swagger-ui/index.html#/ZorgaanbiederController/getZorgaanbieders") kunnen wij een REST API bevragen voor data van alle zorgaanbieders. Deze API bevat meer gegevens dan wij nodig hebben. Namelijk mutaties - historie van records en inactieve AGB codes. Wij hallen de actuele records op en niet de historie. Historie is voor dit dashboard niet relevant en zullen we dus niet van de API ophalen.
 
 Deze data hebben wij nodig om vervolgens data van Vektis op te halen met een webscraper. In [Verrijking van gegevens vanuit Vektis](#verrijking-van-gegevens-vanuit-vektis) zullen wij dit verder uitwerken. Deze gegevens zullen, zoals best practices, opslaan as **"Brons"** A.K.A **"Raw"** voordat we bewerkingen hierop uitvoeren.
 
-#### Voorbeeld tabel
+#### Voorbeeld JSON Response
+```json
+[
+  {
+    "geldigVanaf": "2023-12-27",
+    "geldigTot": "2023-12-27",
+    "zorgkantoor": "string",
+    "agb": "string",
+    "agbVervanger": "string",
+    "naamInstelling": "string",
+    "erai": true,
+    "adres": {
+      "straat": "string",
+      "huisnummer": 0,
+      "huisnummerToevoeging": "string",
+      "postcode": "string",
+      "plaats": "string"
+    },
+    "mutaties": [
+      {
+        "publishDate": "2023-12-27T22:36:58.823Z",
+        "type": "WIJZIGING"
+      }
+    ]
+  }
+]
+```
 
-| **Mutatiedatum** | **Soort mutatie** | **Geldig vanaf** | **Geldig tot** | **vervangende iWlz-AGB code** | **iWlz-AGB** | **Naam instelling** | **Adres** | **Huisnummer** | **Huisnummertoevoeging** | **Postcode** | **Plaats**  | **Zorgkantoor** | **ERAI indicerend** |
-|------------------|-------------------|------------------|----------------|-------------------------------|--------------|---------------------|-----------|----------------|--------------------------|--------------|-------------|-----------------|----------------------|
-| 12102011         | NIEUW             | 17102010         |                |                               | 06010101     | Delfzicht           | JACHTLN   | 50             |                          | 9934JD       | DELFZYL     | 5501            |                      |
-| 11102010         |                   | 01011900         | 04082010       |                               | 06010105     | REFAJA ZIEKENHUIS   | Postbus   | 109            |                          | 9500AC       | Stadskanaal | 5501            |                      |
-| 12102011         | NIEUW             | 17102010         |                |                               | 06010107     | Martini             | POSTBUS   | 30033          |                          | 9700RM       | GRONINGEN   | 5501            |                     Ja |
+## Verrijking van gegevens vanuit Vektis d.m.v. de AGB code
 
-## Verrijking van gegevens vanuit Vektis
+Op Vektis staat extra informatie m.b.t. de agb codes, deze informatie gaan wij ophalen.
+
+https://www.vektis.nl/agb-register/onderneming-06290205 < voorbeeld url>
+https://www.vektis.nl/agb-register/vestiging-47471602
+
+## Problemen tijdens development
+
+- Verschillende URL's om te scrapen bij Vektis
+- AGB codes bestaan niet altijd op Vektis
