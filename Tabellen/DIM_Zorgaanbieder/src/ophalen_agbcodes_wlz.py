@@ -31,7 +31,6 @@ def extract(url: str) -> json:
     else:
         raise Exception(f"API request failed. Status code: {response.status_code}. Response: {response.text}")
 
-
 def load_raw(response_data: json, file_path: str) -> None:
     """
     Slaat de ruwe JSON-gegevens op in een bestand.

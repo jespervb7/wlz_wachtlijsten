@@ -1,8 +1,6 @@
 import requests
-import random
-from .. config import USER_AGENTS_LIST
 
-def requests_handler(url: str, user_agent: str="") -> requests:
+def requests_handler(url: str, headers: dict={'User-Agent': "WLZ Wachtlijsten dashboard"}) -> requests:
     """
     Deze functie neemt een url en haalt daarmee de API/HTML gegevens op.
     Er wordt automatisch door verschillende user agents gecycled, voornamelijk handig voor webscrapers, het is ook mogelijk om je eigen user agent mee te geven.
@@ -19,12 +17,7 @@ def requests_handler(url: str, user_agent: str="") -> requests:
     """
 
     # Determines if the user passed a specific user agent to use. Otherwise use a list of random user agents.
-    if user_agent == "":
-        selected_user_agent = random.choice(USER_AGENTS_LIST)
-    else:
-        selected_user_agent = user_agent
 
-    headers = {'User-Agent': selected_user_agent}
     response = requests.get(url, headers=headers)   
 
     if response.status_code == 200:
@@ -33,3 +26,10 @@ def requests_handler(url: str, user_agent: str="") -> requests:
     else:
         raise Exception(f"API request failed. Status code: {response.status_code}. Response: {response.text}")
     
+def extract_text_from_html(html):
+    try:
+        html_text = html.text.strip()
+        return html_text
+    except AttributeError as err:
+        print(err)
+        return None
