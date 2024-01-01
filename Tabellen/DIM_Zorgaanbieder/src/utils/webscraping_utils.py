@@ -1,4 +1,5 @@
 import requests
+import sys
 
 def requests_handler(url: str, headers: dict={'User-Agent': "WLZ Wachtlijsten dashboard"}) -> requests:
     """
@@ -15,16 +16,15 @@ def requests_handler(url: str, headers: dict={'User-Agent': "WLZ Wachtlijsten da
     Returns:
         requests: Het requests object wordt teruggegeven om er vervolgens mee verder te gaan.
     """
-
-    # Determines if the user passed a specific user agent to use. Otherwise use a list of random user agents.
-
-    response = requests.get(url, headers=headers)   
-
-    if response.status_code == 200:
+    print(f"Grabbing data from the following url: {url}")
+    try:
+        response = requests.get(url)
         return response
-    #TODO: add logger, more statuscode handling/accepting
-    else:
-        raise Exception(f"API request failed. Status code: {response.status_code}. Response: {response.text}")
+    except requests.exceptions.RequestException as e:
+        # Handles any network-related exceptions
+        print(f"An error occurred while fetching the HTML: {e} from {url}")
+        print("Check your network settings and try again")
+        sys.exit(1)
     
 def extract_text_from_html(html):
     try:
