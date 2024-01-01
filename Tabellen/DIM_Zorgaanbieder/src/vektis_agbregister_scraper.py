@@ -27,7 +27,6 @@ def find_soup_and_extract(agbcode: str, headers: dict):
     response = requests_handler(f'https://www.vektis.nl/agb-register/vestiging-{agbcode}', headers)
     soup = BeautifulSoup(response.text, 'lxml')
     controle_juiste_pagina = extract_text_from_html(soup.select_one('h1.title.title--h1 mb-3'))
-    print(controle_juiste_pagina)
 
     if controle_juiste_pagina != "Pagina niet gevonden":
         soort_agb = "Vestiging"
@@ -48,7 +47,6 @@ def extract_data_vestiging(soup_object: BeautifulSoup, soort_agb: str, agbcode: 
     # Basis registratie gegevens
     dict_basis_registratie = {}
     basisregistratie_html = soup_object.select("div.data-stack.basic-info__pair")
-    print(basisregistratie_html)
     
     for column in basisregistratie_html:
         column_name = extract_text_from_html(column.select_one("div.data-stack__label"))
@@ -107,15 +105,17 @@ def extract_data_onderneming(soup_object: BeautifulSoup, soort_agb: str, agbcode
 def main():
     #first scrape the vestigingen agbcodes + controle of goede webpagina. Voeg J toe als gescraped anders N.
     #second scrape the ondernemingen.
-    agb_codes = ['47471602', '30300680']
+    agb_codes = ['47471602', '30300680', '75753831']
     basisregistratie = []
     adres_gegevens = []
 
     for agb in agb_codes:
         random_user_agent = random.choice(USER_AGENTS_LIST)
-        header = {'User-Agent': random_user_agent}
+        header = {'User-Agent': random_user_agent,
+                  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                    'Accept-Language': 'en-US,en;q=0.5',
+                    'Referer': 'https://www.google.com/'}
         agb_data = find_soup_and_extract(agb, header)
-        print(agb_data)
         basisregistratie.append(agb_data[0])
 
         # Omdat we adressen anders ophalen moeten we nu ook door een adres lijst loopen.
