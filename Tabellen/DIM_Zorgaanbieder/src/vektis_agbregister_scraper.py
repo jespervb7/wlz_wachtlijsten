@@ -26,7 +26,7 @@ def find_soup_and_extract(agbcode: str, headers: dict):
 
     response = requests_handler(f'https://www.vektis.nl/agb-register/vestiging-{agbcode}', headers)
     soup = BeautifulSoup(response.text, 'lxml')
-    controle_juiste_pagina = extract_text_from_html(soup.select_one('h1.title.title--h1 mb-3'))
+    controle_juiste_pagina = extract_text_from_html(soup.select_one('h1.title.title--h1.mb-3'))
 
     if controle_juiste_pagina != "Pagina niet gevonden":
         soort_agb = "Vestiging"
@@ -105,7 +105,7 @@ def extract_data_onderneming(soup_object: BeautifulSoup, soort_agb: str, agbcode
 def main():
     #first scrape the vestigingen agbcodes + controle of goede webpagina. Voeg J toe als gescraped anders N.
     #second scrape the ondernemingen.
-    agb_codes = ['47471602', '30300680', '75753831']
+    agb_codes = get_agbcodes()
     basisregistratie = []
     adres_gegevens = []
 
@@ -123,7 +123,7 @@ def main():
             adres_gegevens.append(adres)
 
         # Om de website niet te overbelasten wachten we even per agb
-        time.sleep(10)
+        time.sleep(3)
     print(adres_gegevens)
     # df aanmaken voor basisregristratie gegevens
     df_basisregristratie_met_dict = pd.DataFrame(basisregistratie, columns=['AGB Code', 'Soort zorgaanbieder', 'Hoort bij onderneming','dict'])
