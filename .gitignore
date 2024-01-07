@@ -1,6 +1,7 @@
 *.xlsx
 *.json
 *.csv
+*.pdf
 data/
 dump/
 __pycache__
